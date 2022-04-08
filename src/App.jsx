@@ -1,45 +1,39 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import styled, { ThemeProvider } from "styled-components";
+import "./App.css";
+
+// components
+import Home from "./pages/Home";
+import Header from "./components/Header";
+
+// style
+import GlobalStyles from "./styled/GlobalStyles";
+import theme from "./styled/theme";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <Header />
+      <Container>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/word/add" element={<Form />} /> */}
+        </Routes>
+      </Container>
+    </ThemeProvider>
+  );
 }
 
-export default App
+const Container = styled.div`
+  background-color: #f1f3f4;
+  ${({ theme }) => theme.device.tablet} {
+  }
+  ${({ theme }) => theme.device.desktop} {
+  }
+`;
+
+export default App;
