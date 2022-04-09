@@ -1,6 +1,7 @@
 const device = {
-  tablet: "@media screen and (min-width: 768px)",
   desktop: "@media screen and (min-width: 1024px)",
+  tablet: "@media screen and (min-width: 768px)",
+  mobile: "@media screen and (min-width: 320px)",
 };
 
 const colors = {

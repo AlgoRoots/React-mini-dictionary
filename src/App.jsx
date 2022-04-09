@@ -3,17 +3,29 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import "./App.css";
 
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { loadWordsFB } from "./redux/modules/words";
+
 // components
 import Home from "./pages/Home";
+import Form from "./pages/Form";
 import Header from "./components/Header";
+import { db } from "./firebase";
+import { collection, getDoc, getDocs, addDoc } from "firebase/firestore";
 
 // style
 import GlobalStyles from "./styled/GlobalStyles";
 import theme from "./styled/theme";
 
 function App() {
+  const dispatch = useDispatch();
   const [count, setCount] = useState(0);
 
+  React.useEffect(() => {
+    dispatch(loadWordsFB());
+  }, []);
+  //NotFound넣기
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -21,7 +33,7 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/word/add" element={<Form />} /> */}
+          <Route path="/word/add/*" element={<Form />} />
         </Routes>
       </Container>
     </ThemeProvider>

@@ -4,37 +4,69 @@
 
 import React, { forwardRef } from "react";
 import styled, { css } from "styled-components";
+import { Link } from "react-router-dom";
 
 // react = icons
 
-import { BsFillBookmarkFill, BsThreeDotsVertical, BsX } from "react-icons/bs";
+//redux
+import { useDispatch } from "react-redux";
+
+// react = icons
+import {
+  BsFillBookmarkFill,
+  BsThreeDotsVertical,
+  BsX,
+  BsBookmark,
+} from "react-icons/bs";
+import { TiTickOutline, TiTick, TiEdit, TiTimes } from "react-icons/ti";
 import { MdModeEdit } from "react-icons/md";
 import { IconBase } from "react-icons/lib";
 
-const WordCard = (ref) => {
+// elements
+import Button from "../elements/Button";
+
+// 함수형 컴포넌트를 forwardRef를 통해 Home에 보낸것 ref인자전달 매개변수?
+const WordCard = forwardRef(({ word_obj }, ref) => {
+  // const word_lists = useSelector((state) => state.words.word_list);
+  // console.log(word_lists);
+  const dispatch = useDispatch();
+
   // ES6 구조분해 할당 . 가독성 높임
-  // const { word, meaning, completed, id } = word_obj;
+  const { word, tag, meaning, detailLink, id, completed } = word_obj;
+  console.log(detailLink);
   return (
-    <Card>
+    // 여기서 ref보냄
+    //  // location.state. 이용했음 line 49
+    <Card ref={ref} completed={`${completed}`}>
       <CardHeader>
         <Title>
-          <h1>TDD</h1>
-          <p>#개발용어</p>
+          <h1>{word}</h1>
+          <p>{tag}</p>
         </Title>
         <div>
-          <button>❌</button>
-          <button>⚙️</button>
+          <button>
+            <BeforeCheck />
+          </button>
+
+          <Link to={`/word/${id}/edit`} state={{ word_obj }}>
+            <Edit completed={`${completed}`} />
+          </Link>
+          <button>
+            <Delete />
+          </button>
         </div>
       </CardHeader>
+      <WordArea>{meaning}</WordArea>
 
-      <WordArea>
-        Test Driven Development - 개발을 하기 전에 테스트 코드를 먼저 짜본다는
-        아이디어에서 시작한 개념. [디자인 > 테스트 > 코드작성]의 과정이다.
-      </WordArea>
-      <button>more detail</button>
+      <Button
+        text="more detail"
+        _onClick={() => {
+          window.open(`${detailLink}`);
+        }}
+      ></Button>
     </Card>
   );
-};
+});
 
 const Card = styled.article`
   ${({ completed, theme }) => {
@@ -104,9 +136,6 @@ const BtnBox = styled.div`
   padding: 20px;
   display: flex;
   align-items: center;
-  & > button {
-    padding: 3 px;
-  }
 `;
 
 const WordArea = styled.div`
@@ -121,12 +150,26 @@ const WordArea = styled.div`
   }}
 `;
 
-const BeforeCheck = styled(BsFillBookmarkFill)`
+const BeforeCheck = styled(TiTickOutline)`
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+`;
+
+const AfterCheck = styled(BsFillBookmarkFill)`
   color: ${({ theme }) => theme.colors.darkGrey};
   font-size: ${({ theme }) => theme.fontSizes.xl};
 `;
-// const AfterCheck = styled(BsFillBookmarkFill)`
-//   color: ${({ theme }) => theme.colors.darkGrey};
-//   font-size: ${({ theme }) => theme.fontSizes.xl};
-// `;
+
+const Icons = css`
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+`;
+
+const Edit = styled(TiEdit)`
+  ${Icons}
+`;
+const Delete = styled(TiTimes)`
+  ${Icons}
+`;
+
 export default WordCard;

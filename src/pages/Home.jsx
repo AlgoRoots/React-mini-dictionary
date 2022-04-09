@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { BsWordpress } from "react-icons/bs";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-// components
+//redux
+import { useSelector } from "react-redux";
+
+import styled from "styled-components";
+import { TiPlus } from "react-icons/ti";
+
+// components & elements
 import WordCard from "../components/WordCard";
+import Button from "../elements/Button";
 
 const Home = (props) => {
+  const words = useSelector((state) => state.words.word_list);
+
   return (
     <div>
       <React.StrictMode>
         <Cards>
-          <WordCard />
-          <WordCard />
-          <WordCard />
-          <WordCard />
-          <WordCard />
-          <WordCard />
-          <WordCard />
+          {words.map((word, idx) => {
+            return <WordCard key={word.id} word_obj={word} />;
+          })}
         </Cards>
+        <Link to="/word/add">
+          <Button is_add>
+            <Plus />
+          </Button>
+        </Link>
       </React.StrictMode>
     </div>
   );
@@ -33,4 +42,13 @@ const Cards = styled.div`
   padding: 50px 0;
 `;
 
+const Plus = styled(TiPlus)`
+  font-size: 28px;
+`;
+
+const ItemStyle = styled.div`
+  padding: 16px;
+  margin: 8px;
+  background-color: aliceblue;
+`;
 export default Home;
