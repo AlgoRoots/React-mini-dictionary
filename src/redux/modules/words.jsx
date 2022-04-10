@@ -16,7 +16,8 @@ import { db } from "../../firebase";
 const LOAD = "words/LOAD";
 const ADD = "words/ADD";
 const MODIFY = "words/MODIFY";
-const REMOVE = "words/REMOVE";
+const BOOKMARK = "words/BOOKMARK";
+const DELETE = "words/DELETE";
 const LOADED = "LOADED";
 
 const initialState = {
@@ -43,18 +44,10 @@ export function addWord(word) {
   return { type: ADD, word };
 }
 
-export const modifyWord = (word) => ({ type: MODIFY, word });
+export const modifyWord = (wordData, id) => ({ type: MODIFY, wordData, id });
+export const addBookMark = (id) => ({ type: BOOKMARK, id });
+export const deleteWord = (id) => ({ type: DELETE, id });
 export const isLoaded = (isLoaded) => ({ type: LOADED, isLoaded });
-
-// React.useEffect(async () => {
-//   console.log(db);
-
-//   const query = await getDocs(collection(db, "dictionary"));
-//   console.log(query);
-//   query.forEach((doc) => {
-//     console.log(doc.id, doc.data());
-//   });
-// }, []);
 
 //middlewares
 export const loadWordsFB = () => {
@@ -88,11 +81,44 @@ export const addWordFB = (word) => {
 };
 
 // 단어 내용 변경 함수
-export const modifyWordFB = (word, id) => {
-  return function (dispatch) {
-    words_db.doc(id).update(word);
-    const new_word = { ...word, id };
-    dispatch(modifyWord(new_word));
+export const modifyWordFB = (wordData, id) => {
+  console.log(wordData, id);
+  return async function (dispatch) {
+    const docRef = doc(db, "dictionary", id);
+
+    await updateDoc(docRef, wordData);
+
+    dispatch(modifyWord(wordData, id));
+  };
+};
+
+// 단어 북마크 함수
+export const addBookMarkFB = (word) => {
+  return async function (dispatch) {
+    // console.log(word);
+    const docRef = doc(db, "dictionary", word.id);
+    await updateDoc(docRef, { bookmark: !word.bookmark });
+
+    // const _word_list = getState().words.list;
+    // const word_idx = _word_list.findIndex((item) => {
+    //   return item.id === word.id;
+    // });
+    // console.log(word_idx);
+    dispatch(addBookMark(word.id));
+  };
+};
+
+//단어 삭제 함수
+export const deleteWordFB = (id) => {
+  return async function (dispatch) {
+    if (!id) {
+      window.alert("아이디가 없네요!");
+      return;
+    }
+    const docRef = doc(db, "dictionary", id);
+
+    await deleteDoc(docRef);
+    dispatch(deleteWord(docRef.id));
   };
 };
 // Reducer
@@ -106,14 +132,31 @@ export default function reducer(state = initialState, action = {}) {
       const new_words_list = [action.word, ...state.word_list];
       return { word_list: new_words_list, is_loaded: true };
 
-    // case "word/MODIFY":
-    //   let modified_words = state.word_list.map((word) =>
-    //     word.id === action.word.id ? { ...word, ...action.word } : word
-    //   );
-    //   return {
-    //     ...state,
-    //     word_list: modified_words,
-    //   };
+    case MODIFY:
+      let modified_words = state.word_list.map((word) =>
+        word.id === action.id ? { ...word, ...action.wordData } : word
+      );
+
+      return {
+        ...state,
+        word_list: modified_words,
+      };
+
+    case "words/BOOKMARK":
+      const new_word_list = state.word_list.map((word) =>
+        word.id === action.id ? { ...word, bookmark: !word.bookmark } : word
+      );
+      return {
+        ...state,
+        word_list: new_word_list,
+      };
+
+    case DELETE:
+      let left_words = state.word_list.filter((word) => word.id !== action.id);
+      return {
+        ...state,
+        word_list: left_words,
+      };
     default:
       return state;
   }

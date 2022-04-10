@@ -29,8 +29,14 @@ to={{
 // <Link to={`/${coin.id}/chart`} state={{ name: coin.name }}>
 
 const Form = (props) => {
-  const data = useLocation.state;
+  const data = useLocation().state
+    ? useLocation().state.word_obj
+    : useLocation().state;
+  console.log(data);
+  //const data = useLocation().state.word_obj;
   console.log("data", data);
+  // console.log("id", data.word_obj.id);
+  // console.log("data state", data === null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -44,6 +50,7 @@ const Form = (props) => {
     const tag = tagRef.current.value.trim();
     const meaning = meaningRef.current.value.trim();
     const detail = detailRef.current.value.trim();
+    console.log(word, tag, meaning, detail);
 
     if (!word || !tag || !meaning || !detail) {
       alert("아직 입력하지 않은 항목이 있습니다. ");
@@ -66,7 +73,7 @@ const Form = (props) => {
     const word_obj = getFormData();
     if (!word_obj) return;
 
-    const new_word_obj = { ...word_obj, date: Date.now(), completed: false };
+    const new_word_obj = { ...word_obj, date: Date.now(), bookmark: false };
     dispatch(addWordFB(new_word_obj));
     navigate("/");
   };
@@ -84,28 +91,30 @@ const Form = (props) => {
   return (
     <Container>
       <Title>{data ? "단어 수정하기" : "단어 추가하기"}</Title>
-      <FormContainer onSubmit={data ? modifyWord : submitWord}>
+      <FormContainer
+        onSubmit={data ? modifyWord : submitWord}
+        autocomplete="off"
+      >
         <Input
-          title="용어"
+          title="Word"
           idText="input-word"
           ref={wordRef}
-          //뭐지?
           currentValue={data && data.word}
         />
         <Input
-          title="태그"
+          title="Tag"
           idText="input-tag"
           ref={tagRef}
           currentValue={data && data.tag}
         />
         <Input
-          title="설명"
+          title="Description"
           idText="input-meaning"
           ref={meaningRef}
           currentValue={data && data.meaning}
         />
         <Input
-          title="참고"
+          title="Link"
           idText="input-detail"
           ref={detailRef}
           currentValue={data && data.detail}
@@ -124,6 +133,7 @@ const Container = styled.div`
   justify-content: center;
   max-width: 400px;
   margin: 50px auto;
+  padding: 0 30px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 1rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -146,7 +156,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  margin: 100px auto;
+  margin: 60px auto;
   font-size: 20px;
   font-weight: 600;
   text-align: center;

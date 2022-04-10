@@ -35,6 +35,7 @@ const Label = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: 600;
   margin-bottom: 5px;
+  text-align: left: ;
 `;
 
 const InputEl = styled.input`
@@ -42,6 +43,7 @@ const InputEl = styled.input`
   padding: 5px 0;
   border-bottom: 2px solid ${({ theme }) => theme.colors.yellow};
   font-weight: 500;
+  width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   transition: border-color 300ms ease-in-out;
 

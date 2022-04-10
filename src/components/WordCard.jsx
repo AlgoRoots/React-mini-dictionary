@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 
 //redux
 import { useDispatch } from "react-redux";
+import { addBookMarkFB, deleteWordFB } from "../redux/modules/words";
 
 // react = icons
 import {
@@ -31,45 +32,54 @@ const WordCard = forwardRef(({ word_obj }, ref) => {
   // console.log(word_lists);
   const dispatch = useDispatch();
 
+  // 북마크 체크 toggle함수
+  const toggleCheck = (word) => {
+    dispatch(addBookMarkFB(word));
+  };
+
+  // 단어 삭제 함수
+  const deleteCard = (id) => {
+    dispatch(deleteWordFB(id));
+  };
   // ES6 구조분해 할당 . 가독성 높임
-  const { word, tag, meaning, detailLink, id, completed } = word_obj;
-  console.log(detailLink);
+  const { word, tag, meaning, detail, id, bookmark } = word_obj;
   return (
     // 여기서 ref보냄
     //  // location.state. 이용했음 line 49
-    <Card ref={ref} completed={`${completed}`}>
+    <Card ref={ref} bookmark={`${bookmark}`}>
       <CardHeader>
         <Title>
           <h1>{word}</h1>
-          <p>{tag}</p>
+          <p>#{tag}</p>
         </Title>
         <div>
-          <button>
-            <BeforeCheck />
+          <button onClick={() => toggleCheck(word_obj)}>
+            {bookmark ? <AfterCheck /> : <BeforeCheck />}
           </button>
 
           <Link to={`/word/${id}/edit`} state={{ word_obj }}>
-            <Edit completed={`${completed}`} />
+            <Edit bookmark={`${bookmark}`} />
           </Link>
-          <button>
-            <Delete />
+          <button onClick={() => deleteCard(id)}>
+            <Delete bookmark={`${bookmark}`} />
           </button>
         </div>
       </CardHeader>
-      <WordArea>{meaning}</WordArea>
+      <WordArea bookmark={`${bookmark}`}>{meaning}</WordArea>
 
       <Button
         text="more detail"
         _onClick={() => {
-          window.open(`${detailLink}`);
+          window.open(`${detail}`);
         }}
+        bookmark={`${bookmark}`}
       ></Button>
     </Card>
   );
 });
 
 const Card = styled.article`
-  ${({ completed, theme }) => {
+  ${({ bookmark, theme }) => {
     const { colors, device } = theme;
     return css`
       min-height: 100%;

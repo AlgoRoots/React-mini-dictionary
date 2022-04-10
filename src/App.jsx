@@ -34,6 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/word/add/*" element={<Form />} />
+          <Route path="/word/:id/edit" element={<Form />} />
         </Routes>
       </Container>
     </ThemeProvider>
