@@ -62,6 +62,7 @@ const Form = (props) => {
       tag,
       meaning,
       detail,
+      bgColor: Math.floor(Math.random() * 3) + 0,
     };
     return word_obj;
   };

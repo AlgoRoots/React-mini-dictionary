@@ -24,7 +24,6 @@ import Button from "../elements/Button";
 const WordCard = forwardRef(({ word_obj }, ref) => {
   // const word_lists = useSelector((state) => state.words.word_list);
   // console.log(word_lists);
-  console.log(CardHeader.className);
   const dispatch = useDispatch();
 
   // 북마크 체크 toggle함수
@@ -37,12 +36,12 @@ const WordCard = forwardRef(({ word_obj }, ref) => {
     dispatch(deleteWordFB(id));
   };
   // ES6 구조분해 할당 . 가독성 높임
-  const { word, tag, meaning, detail, id, bookmark } = word_obj;
+  const { word, tag, meaning, detail, id, bookmark, bgColor } = word_obj;
   return (
     // 여기서 ref보냄
     //  // location.state. 이용했음 line 49
     <Card ref={ref} bookmark={`${bookmark}`}>
-      <CardHeader bookmark={`${bookmark}`} className={`${id}`}>
+      <CardHeader bookmark={`${bookmark}`} bgColor={bgColor}>
         <Title>
           <h1>{word}</h1>
           <p>#{tag}</p>
@@ -109,16 +108,17 @@ const Card = styled.article`
 `;
 
 const CardHeader = styled.div`
-  ${({ bookmark, theme }) => {
+  ${({ bookmark, theme, bgColor }) => {
     const { colors, device, fontSizes } = theme;
-    const headerColors = [colors.green, colors.blue, colors.warmGrey];
-    const randomColors =
-      headerColors[Math.floor(Math.random() * headerColors.length)];
+    console.log("add", bgColor);
+    // const headerColors = [colors.green, colors.blue, colors.warmGrey];
+    // const randomColors =
+    //   headerColors[Math.floor(Math.random() * headerColors.length)];
     return css`
       /* //background-color: ${bookmark === "false"
         ? colors.green
         : colors.blue}; */
-      background: ${randomColors};
+      background: ${bgColor === 1 ? colors.green : colors.blue};
       padding: 1rem;
       width: 100%;
       background-size: cover;
@@ -142,6 +142,7 @@ const Title = styled.div`
     `;
   }}
 `;
+
 const BtnBox = styled.div`
   position: absolute;
   top: 15px;
