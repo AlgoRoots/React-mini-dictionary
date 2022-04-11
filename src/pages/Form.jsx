@@ -119,6 +119,7 @@ const Form = (props) => {
           ref={detailRef}
           currentValue={data && data.detail}
         />
+        <Margin />
         <Button type="submit" text="저장하기">
           {data ? "수정하기" : "저장하기"}
         </Button>
@@ -132,7 +133,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   max-width: 400px;
-  margin: 50px auto;
+  margin: 180px auto;
   padding: 0 30px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 1rem;
@@ -140,14 +141,15 @@ const Container = styled.div`
 
   ${({ theme }) => theme.device.tablet} {
     margin: 150px auto;
+    max-width: 600px;
   }
 
-  animation: fadeInBottom 1.5s;
+  animation: fadeInBottom 1s;
   transform: translateY(0%);
   @keyframes fadeInBottom {
     from {
       opacity: 0;
-      transform: translateY(100%);
+      transform: translateY(30%);
     }
     to {
       opacity: 1;
@@ -165,6 +167,10 @@ const Title = styled.h2`
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
+`;
+
+const Margin = styled.div`
+  margin: 10px;
 `;
 
 export default Form;

@@ -15,11 +15,14 @@ const colors = {
   green: "#92A094",
   blue: "#798996",
   warmGrey: "#A8A9AB",
+  pink: "#DDB9AE",
+
   yellow: "#F0F354",
 
   //btn
-  lightGrey: "##C4C4C4",
+  lightGrey: "#C4C4C4",
   mediumGrey: "#888888",
+  // mediumGrey: "#888888",
 
   // add btn
   darkGrey: "#505050",

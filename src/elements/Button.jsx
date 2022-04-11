@@ -5,7 +5,7 @@ import { css } from "styled-components";
 const Button = (props) => {
   // children 왜하는지 잘 이해 안된다..
   const { text, _onClick, is_add, children } = props;
-
+  const bgColor = { background: props.bgColor };
   if (is_add) {
     return (
       <React.Fragment>
@@ -51,6 +51,8 @@ const RoundBtn = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  vertical-align: middle;
+  padding-top: 5px;
 
   ${({ theme }) => {
     const { colors, device } = theme;
@@ -63,6 +65,22 @@ const RoundBtn = styled.button`
       }
     `;
   }}
+  animation: pulse 1s linear infinite;
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1.04);
+      box-shadow: 0;
+    }
+    80% {
+      transform: scale(0.9);
+      box-shadow: 0 0 0 2px rgba(19, 18, 18, 0.2);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 1px rgba(144, 144, 144, 0.6);
+    }
+  }
 `;
 
 const CardBtn = styled.button`

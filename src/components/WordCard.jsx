@@ -13,15 +13,9 @@ import { useDispatch } from "react-redux";
 import { addBookMarkFB, deleteWordFB } from "../redux/modules/words";
 
 // react = icons
-import {
-  BsFillBookmarkFill,
-  BsThreeDotsVertical,
-  BsX,
-  BsBookmark,
-} from "react-icons/bs";
-import { TiTickOutline, TiTick, TiEdit, TiTimes } from "react-icons/ti";
-import { MdModeEdit } from "react-icons/md";
-import { IconBase } from "react-icons/lib";
+import { BsFillBookmarkFill } from "react-icons/bs";
+import { TiTimes } from "react-icons/ti";
+import { AiTwotoneEdit } from "react-icons/ai";
 
 // elements
 import Button from "../elements/Button";
@@ -30,6 +24,7 @@ import Button from "../elements/Button";
 const WordCard = forwardRef(({ word_obj }, ref) => {
   // const word_lists = useSelector((state) => state.words.word_list);
   // console.log(word_lists);
+  console.log(CardHeader.className);
   const dispatch = useDispatch();
 
   // 북마크 체크 toggle함수
@@ -47,28 +42,30 @@ const WordCard = forwardRef(({ word_obj }, ref) => {
     // 여기서 ref보냄
     //  // location.state. 이용했음 line 49
     <Card ref={ref} bookmark={`${bookmark}`}>
-      <CardHeader>
+      <CardHeader bookmark={`${bookmark}`} className={`${id}`}>
         <Title>
           <h1>{word}</h1>
           <p>#{tag}</p>
         </Title>
-        <div>
-          <button onClick={() => toggleCheck(word_obj)}>
+        <BtnBox>
+          <BtnCircleBg onClick={() => toggleCheck(word_obj)}>
             {bookmark ? <AfterCheck /> : <BeforeCheck />}
-          </button>
+          </BtnCircleBg>
 
           <Link to={`/word/${id}/edit`} state={{ word_obj }}>
-            <Edit bookmark={`${bookmark}`} />
+            <BtnCircleBg>
+              <Edit bookmark={`${bookmark}`} />
+            </BtnCircleBg>
           </Link>
-          <button onClick={() => deleteCard(id)}>
+          <BtnCircleBg onClick={() => deleteCard(id)}>
             <Delete bookmark={`${bookmark}`} />
-          </button>
-        </div>
+          </BtnCircleBg>
+        </BtnBox>
       </CardHeader>
       <WordArea bookmark={`${bookmark}`}>{meaning}</WordArea>
 
       <Button
-        text="more detail"
+        text="Learn more"
         _onClick={() => {
           window.open(`${detail}`);
         }}
@@ -85,11 +82,11 @@ const Card = styled.article`
       min-height: 100%;
       display: flex;
       flex-direction: column;
-
+      margin-bottom: 20px;
       position: relative;
       top: 0;
       width: 100%;
-      height: 250px;
+      height: 280px;
       border-radius: 10px;
       background-color: ${colors.white};
       transition: 300ms eash-in-out;
@@ -112,10 +109,16 @@ const Card = styled.article`
 `;
 
 const CardHeader = styled.div`
-  ${({ theme }) => {
+  ${({ bookmark, theme }) => {
     const { colors, device, fontSizes } = theme;
+    const headerColors = [colors.green, colors.blue, colors.warmGrey];
+    const randomColors =
+      headerColors[Math.floor(Math.random() * headerColors.length)];
     return css`
-      background-color: ${colors.green};
+      /* //background-color: ${bookmark === "false"
+        ? colors.green
+        : colors.blue}; */
+      background: ${randomColors};
       padding: 1rem;
       width: 100%;
       background-size: cover;
@@ -143,39 +146,66 @@ const BtnBox = styled.div`
   position: absolute;
   top: 15px;
   right: 15px;
-  padding: 20px;
   display: flex;
   align-items: center;
 `;
 
 const WordArea = styled.div`
   ${({ theme }) => {
-    const { colors, device, fontSize } = theme;
+    const { colors, device, fontSizes } = theme;
     return css`
       display: flex;
       flex-direction: column;
       flex: 1;
       padding: 1rem;
+      overflow: auto;
+      font-size: ${fontSizes.sm};
     `;
   }}
 `;
 
-const BeforeCheck = styled(TiTickOutline)`
-  color: ${({ theme }) => theme.colors.white};
+// btn
+const BtnCircleBg = styled.button`
+  width: 1.6em;
+  height: 1.6em;
+  padding: 0;
+  margin-right: 6px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.lightGrey};
+  ${({ theme }) => theme.device.tablet} {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 4px;
+  }
+`;
+
+const BeforeCheck = styled(BsFillBookmarkFill)`
+  width: 0.6em;
+  vertical-align: middle;
+  padding-bottom: 4px;
+  color: ${({ theme }) => theme.colors.mediumGrey};
   font-size: ${({ theme }) => theme.fontSizes.xl};
 `;
 
 const AfterCheck = styled(BsFillBookmarkFill)`
-  color: ${({ theme }) => theme.colors.darkGrey};
+  width: 0.6em;
+  vertical-align: middle;
+  padding-bottom: 4px;
+  color: ${({ theme }) => theme.colors.yellow};
   font-size: ${({ theme }) => theme.fontSizes.xl};
 `;
 
 const Icons = css`
-  color: ${({ theme }) => theme.colors.white};
+  width: 0.9em;
+  vertical-align: middle;
+  padding-bottom: 3px;
+
+  color: ${({ theme }) => theme.colors.mediumGrey};
   font-size: ${({ theme }) => theme.fontSizes.xl};
+  text-align: center;
 `;
 
-const Edit = styled(TiEdit)`
+const Edit = styled(AiTwotoneEdit)`
   ${Icons}
 `;
 const Delete = styled(TiTimes)`

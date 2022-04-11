@@ -10,6 +10,7 @@ import { loadWordsFB } from "./redux/modules/words";
 // components
 import Home from "./pages/Home";
 import Form from "./pages/Form";
+import Bookmark from "./pages/Bookmark";
 import Header from "./components/Header";
 import { db } from "./firebase";
 import { collection, getDoc, getDocs, addDoc } from "firebase/firestore";
@@ -35,6 +36,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/word/add/*" element={<Form />} />
           <Route path="/word/:id/edit" element={<Form />} />
+          <Route path="/bookmark" element={<Bookmark />} />
         </Routes>
       </Container>
     </ThemeProvider>
