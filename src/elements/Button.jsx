@@ -1,11 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { css } from "styled-components";
-
+import { useSelector } from "react-redux";
 const Button = (props) => {
   // children 왜하는지 잘 이해 안된다..
-  const { text, _onClick, is_add, children } = props;
-  const bgColor = { background: props.bgColor };
+
+  //const data = useLocation().state.word_obj;
+  console.log(props);
+
+  const { text, _onClick, is_add, children, bgColor } = props;
+
   if (is_add) {
     return (
       <React.Fragment>
@@ -19,10 +23,12 @@ const Button = (props) => {
   //   width: width,
   //   padding: padding,
   // };
-
+  // word
   return (
     <React.Fragment>
-      <CardBtn onClick={_onClick}>{text ? text : children}</CardBtn>
+      <CardBtn onClick={_onClick} bgColor={bgColor}>
+        {text ? text : children}
+      </CardBtn>
     </React.Fragment>
   );
 };
@@ -84,14 +90,18 @@ const RoundBtn = styled.button`
 `;
 
 const CardBtn = styled.button`
-  ${({ theme }) => {
+  ${({ theme, bgColor }) => {
     const { colors, device, fontSizes } = theme;
     return css`
       ${Btn};
       border-radius: 2rem;
       height: 2rem;
       width: 12rem;
-      background-color: ${colors.green};
+      background: ${bgColor === 1
+        ? colors.green
+        : bgColor === 2
+        ? colors.blue
+        : colors.warmGrey};
       font-size: ${fontSizes.md};
       ${device.tablet} {
         width: 8rem;
