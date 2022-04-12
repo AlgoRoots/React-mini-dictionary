@@ -29,7 +29,7 @@ import Button from "../elements/Button";
 const WordCard = forwardRef(({ word_obj }, ref) => {
   // const word_lists = useSelector((state) => state.words.word_list);
   // console.log(word_lists);
-  console.log("ddd", ref);
+  // console.log("ddd", ref);
   const dispatch = useDispatch();
 
   // 북마크 체크 toggle함수
@@ -126,10 +126,10 @@ const CardHeader = styled.div`
         ? colors.green
         : colors.blue}; */
       background: ${bgColor === 1
-        ? colors.green
+        ? colors.warmGrey
         : bgColor === 2
         ? colors.blue
-        : colors.warmGrey};
+        : colors.green};
       padding: 1rem;
       width: 100%;
       background-size: cover;

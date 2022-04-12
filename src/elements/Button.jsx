@@ -6,14 +6,25 @@ const Button = (props) => {
   // children 왜하는지 잘 이해 안된다..
 
   //const data = useLocation().state.word_obj;
-  console.log(props);
+  // console.log(props);
 
-  const { text, _onClick, is_add, children, bgColor } = props;
+  const { text, _onClick, is_add, children, bgColor, is_edit, editColor } =
+    props;
 
   if (is_add) {
     return (
       <React.Fragment>
         <RoundBtn onClick={_onClick}>{text ? text : children}</RoundBtn>
+      </React.Fragment>
+    );
+  }
+
+  if (is_edit) {
+    return (
+      <React.Fragment>
+        <EditBtn onClick={_onClick} editColor={editColor}>
+          {text ? text : children}
+        </EditBtn>
       </React.Fragment>
     );
   }
@@ -98,10 +109,27 @@ const CardBtn = styled.button`
       height: 2rem;
       width: 12rem;
       background: ${bgColor === 1
-        ? colors.green
+        ? colors.warmGrey
         : bgColor === 2
         ? colors.blue
-        : colors.warmGrey};
+        : colors.green};
+      font-size: ${fontSizes.md};
+      ${device.tablet} {
+        width: 8rem;
+      }
+      margin-bottom: 1rem;
+    `;
+  }}
+`;
+const EditBtn = styled.button`
+  ${({ theme, bgColor }) => {
+    const { colors, device, fontSizes } = theme;
+    return css`
+      ${Btn};
+      border-radius: 2rem;
+      height: 2rem;
+      width: 12rem;
+      background: ${colors.green};
       font-size: ${fontSizes.md};
       ${device.tablet} {
         width: 8rem;
