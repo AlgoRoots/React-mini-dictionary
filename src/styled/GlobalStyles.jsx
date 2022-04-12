@@ -12,6 +12,12 @@ const GlobalStyles = createGlobalStyle`
     font-style: normal;
   }
 
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
   *{
     box-sizing: border-box;
     margin : auto
@@ -20,7 +26,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     min-height: 100vh-60px;
     background-color: #f1f3f4;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Pretendard-Regular';
+  
     padding: 0px 3rem;
    
   }

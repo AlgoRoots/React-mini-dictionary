@@ -41,6 +41,7 @@ const WordCard = forwardRef(({ word_obj }, ref) => {
   const deleteCard = (id) => {
     dispatch(deleteWordFB(id));
   };
+
   // ES6 구조분해 할당 . 가독성 높임
   const { word, tag, meaning, detail, id, bookmark, bgColor } = word_obj;
   return (
@@ -171,7 +172,8 @@ const WordArea = styled.div`
       flex: 1;
       padding: 1rem;
       overflow: auto;
-      font-size: ${fontSizes.sm};
+      font-size: ${fontSizes.md};
+      line-height: 1.2rem;
     `;
   }}
 `;
