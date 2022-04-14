@@ -20,10 +20,16 @@ import { AiTwotoneEdit } from "react-icons/ai";
 // elements
 import Button from "../elements/Button";
 
-// 함수형 컴포넌트를 forwardRef를 통해 Home에 보낸것 ref인자전달 매개변수?
+// React 컴포넌트에서 ref prop을 사용하려면 React에서 제공하는 forwardRef()라는 함수를 사용해야 합니다.
+//  React 컴포넌트를 forwardRef()라는 함수로 감싸주면, 해당 컴포넌트는 함수는 두 번째 매개 변수를 갖게
+//  되는데, 이를 통해 외부에서 ref prop을 넘길 수 있습니다.
+
+// 함수형 컴포넌트를 forwardRef를 통해 Form데이터를 받아온다? ref인자전달 매개변수?
+
 const WordCard = forwardRef(({ word_obj }, ref) => {
   // const word_lists = useSelector((state) => state.words.word_list);
   // console.log(word_lists);
+  // console.log("ddd", ref);
   const dispatch = useDispatch();
 
   // 북마크 체크 toggle함수
@@ -35,6 +41,7 @@ const WordCard = forwardRef(({ word_obj }, ref) => {
   const deleteCard = (id) => {
     dispatch(deleteWordFB(id));
   };
+
   // ES6 구조분해 할당 . 가독성 높임
   const { word, tag, meaning, detail, id, bookmark, bgColor } = word_obj;
   return (
@@ -69,6 +76,7 @@ const WordCard = forwardRef(({ word_obj }, ref) => {
           window.open(`${detail}`);
         }}
         bookmark={`${bookmark}`}
+        bgColor={bgColor}
       ></Button>
     </Card>
   );
@@ -110,7 +118,7 @@ const Card = styled.article`
 const CardHeader = styled.div`
   ${({ bookmark, theme, bgColor }) => {
     const { colors, device, fontSizes } = theme;
-    console.log("add", bgColor);
+
     // const headerColors = [colors.green, colors.blue, colors.warmGrey];
     // const randomColors =
     //   headerColors[Math.floor(Math.random() * headerColors.length)];
@@ -118,7 +126,11 @@ const CardHeader = styled.div`
       /* //background-color: ${bookmark === "false"
         ? colors.green
         : colors.blue}; */
-      background: ${bgColor === 1 ? colors.green : colors.blue};
+      background: ${bgColor === 1
+        ? colors.warmGrey
+        : bgColor === 2
+        ? colors.blue
+        : colors.green};
       padding: 1rem;
       width: 100%;
       background-size: cover;
@@ -160,7 +172,8 @@ const WordArea = styled.div`
       flex: 1;
       padding: 1rem;
       overflow: auto;
-      font-size: ${fontSizes.sm};
+      font-size: ${fontSizes.md};
+      line-height: 1.2rem;
     `;
   }}
 `;

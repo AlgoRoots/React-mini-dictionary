@@ -11,30 +11,22 @@ import Button from "../elements/Button";
 import Input from "../elements/Input";
 
 {
-  /* <button onClick={() => toggleCheck(word_obj)}>
-{completed ? <AfterCheck /> : <BeforeCheck />}
-</button>
-<Link
-to={{
-  pathname: `/word/${id}/edit`,
-  state: word_obj,
-}}
->
-<Edit completed={`${completed}`} />
+  /* <Link to={`/word/${id}/edit`} state={{ word_obj }}>
+            <BtnCircleBg>
+              <Edit bookmark={`${bookmark}`} />
+            </BtnCircleBg>
 </Link> */
 }
-// location : https://blog.doitreviews.com/development/2020-03-07-react-router/
 
-// <Link to={`/${coin.id}/chart`} state={{ name: coin.name }}> <Img alt="" src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`} /> {coin.id} &rarr; </Link>
-// <Link to={`/${coin.id}/chart`} state={{ name: coin.name }}>
+// location : https://blog.doitreviews.com/development/2020-03-07-react-router/
 
 const Form = (props) => {
   const data = useLocation().state
     ? useLocation().state.word_obj
     : useLocation().state;
-  console.log(data);
+
   //const data = useLocation().state.word_obj;
-  console.log("data", data);
+
   // console.log("id", data.word_obj.id);
   // console.log("data state", data === null);
   const dispatch = useDispatch();
@@ -50,7 +42,7 @@ const Form = (props) => {
     const tag = tagRef.current.value.trim();
     const meaning = meaningRef.current.value.trim();
     const detail = detailRef.current.value.trim();
-    console.log(word, tag, meaning, detail);
+    //console.log(word, tag, meaning, detail);
 
     if (!word || !tag || !meaning || !detail) {
       alert("아직 입력하지 않은 항목이 있습니다. ");
@@ -62,7 +54,7 @@ const Form = (props) => {
       tag,
       meaning,
       detail,
-      bgColor: Math.floor(Math.random() * 3) + 0,
+      bgColor: data ? data.bgColor : Math.floor(Math.random() * 3) + 1,
     };
     return word_obj;
   };
